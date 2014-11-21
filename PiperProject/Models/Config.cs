@@ -1,5 +1,7 @@
 ﻿using System.IO;
 
+using MongoDB.Driver;
+
 using Newtonsoft.Json.Linq;
 
 namespace PiperProject.Models {
@@ -7,6 +9,7 @@ namespace PiperProject.Models {
     public static class Config {
 
         private static dynamic _current;
+        private static MongoClient _database;
 
         public static dynamic Current {
             get {
@@ -34,16 +37,26 @@ namespace PiperProject.Models {
 
         public static string ConnectionString {
             get {
+
                 return string.Format(
-                    "metadata=res://*/Models.Magic8.csdl|res://*/Models.Magic8.ssdl|res://*/Models.Magic8.msl;"+
-                    "provider=System.Data.SqlClient;" +
-                    "provider connection string='data source={0};initial catalog={1};persist security info=True;" +
-                    "user id={2};password={3};MultipleActiveResultSets=True;App=EntityFramework';",
+                    "mongodb://{0}/{1}",
                     Current.Backend.Location,
-                    Current.Backend.Database,
-                    Current.Backend.User,
-                    Current.Backend.Password);
+                    Current.Backend.Database);
             }
         }
+
+        public static MongoDatabase Database {
+            get {
+                return (_database ?? (_database = new MongoClient(ConnectionString))).GetServer().GetDatabase((string) Current.Backend.Database);
+            }
+        }
+
+        public static MongoCollection<T> Collection<T>(string pre = "") {
+
+            var type = typeof(T);
+
+            return Database.GetCollection<T>(pre + type.Name);
+        }
+
     }
 }

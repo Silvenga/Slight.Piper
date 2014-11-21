@@ -19,9 +19,9 @@ namespace PiperProject {
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{hash}",
                 defaults: new {
-                    id = RouteParameter.Optional
+                    hash = RouteParameter.Optional
                 }
             );
 

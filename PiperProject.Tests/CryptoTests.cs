@@ -1,7 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using MongoDB.Driver.Builders;
 
 using PiperProject.Common.Actors;
+using PiperProject.Common.Models;
+using PiperProject.Models;
+
+using Document = PiperProject.Common.Models.Document;
 
 namespace PiperProject.Tests {
     [TestClass]
@@ -28,6 +33,22 @@ namespace PiperProject.Tests {
             var result = Crypto.Hash(test);
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void MongoTest() {
+
+            var database = Config.Database;
+
+            var collection = Config.Collection<Document>();
+
+            var query = Query<Document>.EQ(e => e.Id, "test");
+
+            var context = Config.Collection<Document>();
+
+            var document = context.FindOne(query);
+
+
         }
     }
 }

@@ -4,8 +4,8 @@
         "Port": 8000
     },
     "Backend": {
-        "Location": "10.0.1.100",
-        "Database": "magic8",
+        "Location": "127.0.0.1",
+        "Database": "piper",
         "Password": "silverlight",
         "User": "dev"
     }
