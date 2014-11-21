@@ -1,0 +1,12 @@
+﻿{
+    "Host": {
+        "Interface": "localhost",
+        "Port": 8000
+    },
+    "Backend": {
+        "Location": "10.0.1.100",
+        "Database": "magic8",
+        "Password": "silverlight",
+        "User": "dev"
+    }
+}
