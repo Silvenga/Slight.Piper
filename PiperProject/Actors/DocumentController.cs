@@ -8,6 +8,7 @@ using System.Web.Http;
 
 using MongoDB.Driver.Builders;
 
+using PiperProject.Common.Models;
 using PiperProject.Models;
 
 namespace PiperProject.Actors {

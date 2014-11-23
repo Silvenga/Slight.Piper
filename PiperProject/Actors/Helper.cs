@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 using MongoDB.Driver.Builders;
 
+using PiperProject.Common.Models;
 using PiperProject.Models;
 
 namespace PiperProject.Actors {
+
     class Helper {
 
         public static bool TryFind(string hash, out Document document) {
