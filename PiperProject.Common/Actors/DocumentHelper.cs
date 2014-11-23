@@ -11,6 +11,13 @@ namespace PiperProject.Common.Actors {
             return Guid.NewGuid().ToString("N").Substring(0, size);
         }
 
+        public static bool IsValidHeader(string header, Lookup lookup) {
+
+            var plain = Crypto.Decrypt(header, lookup.Key);
+
+            return Equals(lookup.Key, plain);
+        }
+
         public static Document Encrypt(this Document document, out Lookup lookup) {
 
             if(document.IsEncrypted())

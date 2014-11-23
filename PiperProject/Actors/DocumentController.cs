@@ -15,11 +15,12 @@ namespace PiperProject.Actors {
 
     public class DocumentController : ApiController {
 
-
         public string Options(string hash) {
 
+            Console.WriteLine("Head: " + hash);
+
             Document document;
-            if(Helper.TryFind(hash, out document)) {
+            if(TryFind(hash, out document)) {
 
                 return document.CryptoHeader;
             }
@@ -29,8 +30,23 @@ namespace PiperProject.Actors {
 
         public Document Get(string hash) {
 
+            Console.WriteLine("Get: " + hash);
+
             Document document;
-            if(Helper.TryFind(hash, out document)) {
+            if(TryFind(hash, out document)) {
+
+                return document;
+            }
+
+            throw new HttpResponseException(HttpStatusCode.NotFound);
+        }
+
+        public Document Delete(string hash) {
+
+            Console.WriteLine("Delete: " + hash);
+
+            Document document;
+            if(TryDelete(hash, out document)) {
 
                 return document;
             }
@@ -39,6 +55,8 @@ namespace PiperProject.Actors {
         }
 
         public Document Post(Document document) {
+
+            Console.WriteLine("Post: " + document.Id);
 
             var query = Query<Document>.EQ(e => e.Id, document.Id);
             var context = Config.Collection<Document>();
@@ -52,5 +70,33 @@ namespace PiperProject.Actors {
 
             throw new HttpResponseException(HttpStatusCode.Conflict);
         }
+
+        private static bool TryFind(string hash, out Document document) {
+
+            var query = Query<Document>.EQ(e => e.Id, hash);
+
+            var context = Config.Collection<Document>();
+
+            document = context.FindOne(query);
+
+            return document != null;
+        }
+
+        private static bool TryDelete(string hash, out Document document) {
+
+            var query = Query<Document>.EQ(e => e.Id, hash);
+
+            var context = Config.Collection<Document>();
+
+            document = context.FindOne(query);
+
+            var isFound = document != null;
+
+            if(isFound)
+                context.Remove(query);
+
+            return isFound;
+        }
+
     }
 }

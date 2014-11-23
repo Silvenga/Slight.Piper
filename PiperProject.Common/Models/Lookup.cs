@@ -20,5 +20,23 @@ namespace PiperProject.Common.Models {
                 return Crypto.Hash(Key);
             }
         }
+
+        public string PostResource {
+            get {
+                return string.Format("/api/document/");
+            }
+        }
+
+        public string HeadResource {
+            get {
+                return string.Format("/api/document/{0}", Hash);
+            }
+        }
+
+        public string GetResource {
+            get {
+                return string.Format("/api/document/{0}", Hash);
+            }
+        }
     }
 }
