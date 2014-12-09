@@ -11,7 +11,7 @@ namespace PiperProject.Common.Actors {
         public static byte[] GenerateSalt(string password) {
 
             var hashed = Hash(password);
-           return  Encoding.ASCII.GetBytes(hashed.Substring(0, 16));
+            return Encoding.ASCII.GetBytes(hashed.Substring(0, 16));
         }
 
         public static string Encrypt(string plainText, string passPhrase) {

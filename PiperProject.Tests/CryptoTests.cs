@@ -1,4 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using MongoDB.Driver.Builders;
 
@@ -49,6 +54,46 @@ namespace PiperProject.Tests {
             var document = context.FindOne(query);
 
 
+        }
+
+        [TestMethod]
+        public void Salt() {
+
+            const string passPhrase = "TestHash";
+
+            var salt = Crypto.GenerateSalt(passPhrase);
+            var str = System.Text.Encoding.UTF8.GetString(salt);
+
+            using(var password = new Rfc2898DeriveBytes(passPhrase, salt, 1000)) {
+
+                var keyBytes = password.GetBytes(256 / 8);
+
+                var key = Encoding.ASCII.GetString(keyBytes);
+
+                var a = ByteArrayToString(keyBytes);
+            }
+        }
+
+        public static string ByteArrayToString(byte[] ba) {
+            var hex = new StringBuilder(ba.Length * 2);
+            foreach(var b in ba)
+                hex.AppendFormat("{0:x2}", b);
+            return hex.ToString();
+        }
+
+        public static string Hash1(string value) {
+
+            var sb = new StringBuilder();
+
+            using(var hash = new SHA1Managed()) {
+
+                var result = hash.ComputeHash(Encoding.UTF8.GetBytes(value));
+
+                foreach(var b in result)
+                    sb.Append(b.ToString("x2"));
+            }
+
+            return sb.ToString();
         }
     }
 }
