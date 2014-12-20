@@ -1,8 +1,12 @@
-﻿using System.IO;
+﻿#region Usings
+
+using System.IO;
 
 using MongoDB.Driver;
 
 using Newtonsoft.Json.Linq;
+
+#endregion
 
 namespace PiperProject.Models {
 
@@ -24,17 +28,6 @@ namespace PiperProject.Models {
             }
         }
 
-        private static dynamic ReadJson(string file) {
-
-            string jsonStr;
-
-            using(var sr = new StreamReader(file)) {
-                jsonStr = sr.ReadToEnd();
-            }
-
-            return JObject.Parse(jsonStr);
-        }
-
         public static string ConnectionString {
             get {
 
@@ -47,8 +40,21 @@ namespace PiperProject.Models {
 
         public static MongoDatabase Database {
             get {
-                return (_database ?? (_database = new MongoClient(ConnectionString))).GetServer().GetDatabase((string) Current.Backend.Database);
+                return
+                    (_database ?? (_database = new MongoClient(ConnectionString))).GetServer()
+                        .GetDatabase((string) Current.Backend.Database);
             }
+        }
+
+        private static dynamic ReadJson(string file) {
+
+            string jsonStr;
+
+            using(var sr = new StreamReader(file)) {
+                jsonStr = sr.ReadToEnd();
+            }
+
+            return JObject.Parse(jsonStr);
         }
 
         public static MongoCollection<T> Collection<T>(string pre = "") {
@@ -59,4 +65,5 @@ namespace PiperProject.Models {
         }
 
     }
+
 }

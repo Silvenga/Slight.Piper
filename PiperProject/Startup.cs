@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Web.Http;
 
 using Microsoft.Owin.Cors;
@@ -7,6 +9,8 @@ using Microsoft.Owin.Hosting;
 using Owin;
 
 using PiperProject.Models;
+
+#endregion
 
 namespace PiperProject {
 
@@ -18,12 +22,12 @@ namespace PiperProject {
             var config = new HttpConfiguration();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{hash}",
-                defaults: new {
+                "DefaultApi",
+                "api/{controller}/{hash}",
+                new {
                     hash = RouteParameter.Optional
                 }
-            );
+                );
 
             appBuilder.UseCors(CorsOptions.AllowAll);
             appBuilder.UseWebApi(config);
@@ -45,4 +49,5 @@ namespace PiperProject {
         }
 
     }
+
 }

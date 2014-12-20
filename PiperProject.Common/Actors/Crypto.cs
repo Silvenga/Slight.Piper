@@ -1,9 +1,14 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+#endregion
+
 namespace PiperProject.Common.Actors {
+
     public static class Crypto {
 
         public const int Keysize = 256;
@@ -71,11 +76,14 @@ namespace PiperProject.Common.Actors {
 
                 var result = hash.ComputeHash(Encoding.UTF8.GetBytes(value));
 
-                foreach(var b in result)
+                foreach(var b in result) {
                     sb.Append(b.ToString("x2"));
+                }
             }
 
             return sb.ToString();
         }
+
     }
+
 }

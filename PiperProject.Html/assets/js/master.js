@@ -4,9 +4,9 @@ $(document).ready(main);
 function main() {
 
     $("#hashSubmit").click(GetData);
-    $('#hashBox').keypress(function (e) {
+    $('#hashBox').keypress(function(e) {
         var key = e.which;
-        if (key == 13)  // the enter key code
+        if (key == 13) // the enter key code
         {
             $("#hashSubmit").click();
             return false;
@@ -40,7 +40,7 @@ function GetData() {
 
     var hash = Hash(lookup);
 
-    Test(host, hash, lookup, function (data) {
+    Test(host, hash, lookup, function(data) {
 
         var body = data.Body;
 
@@ -98,7 +98,7 @@ function Test(host, hash, lookup, func) {
         dataType: "json",
         type: "OPTIONS",
         url: host + GetResource + hash,
-        success: function (data) {
+        success: function(data) {
 
             log("Found " + lookup + " as " + hash.substr(0, 16));
             log("Asserting vector against '" + data + "'");
@@ -173,4 +173,3 @@ function GetSalt(password) {
 
     return hash;
 }
-

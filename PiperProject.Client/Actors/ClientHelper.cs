@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -6,6 +8,8 @@ using PiperProject.Common.Actors;
 using PiperProject.Common.Models;
 
 using RestSharp;
+
+#endregion
 
 namespace PiperProject.Client.Actors {
 
@@ -18,8 +22,9 @@ namespace PiperProject.Client.Actors {
 
         public static async Task<Lookup> SendAsync(string apiHost, string documentBody) {
 
-            if(string.IsNullOrWhiteSpace(apiHost))
+            if(string.IsNullOrWhiteSpace(apiHost)) {
                 throw new ArgumentException("ApiHost must have value.");
+            }
 
             var document = new Document {
                 Body = documentBody
@@ -48,8 +53,9 @@ namespace PiperProject.Client.Actors {
 
         public static async Task<Document> ReadAsync(string apiHost, string lookupKey) {
 
-            if(string.IsNullOrWhiteSpace(apiHost))
+            if(string.IsNullOrWhiteSpace(apiHost)) {
                 throw new ArgumentException("ApiHost must have value.");
+            }
 
             var lookup = new Lookup {
                 Key = lookupKey
@@ -67,8 +73,9 @@ namespace PiperProject.Client.Actors {
             headResponse.EnsureSuccess();
             var header = headResponse.Content.Replace("\"", "");
 
-            if(!DocumentHelper.IsValidHeader(header, lookup))
+            if(!DocumentHelper.IsValidHeader(header, lookup)) {
                 throw new ArgumentException("Possible hash collision detected. Failing.");
+            }
 
             Console.Error.WriteLine("Found {0}, downloading data.", lookup.Hash.Substring(0, 16));
 
@@ -91,16 +98,20 @@ namespace PiperProject.Client.Actors {
             return client;
         }
 
-        public static Task<IRestResponse<T>> ExecuteTaskAsync<T>(this RestClient client, RestRequest request) where T : new() {
+        public static Task<IRestResponse<T>> ExecuteTaskAsync<T>(this RestClient client, RestRequest request)
+            where T : new() {
 
             var task = new TaskCompletionSource<IRestResponse<T>>();
 
-            client.ExecuteAsync<T>(request, response => {
-                if(response.ErrorException != null)
-                    task.TrySetException(response.ErrorException);
-                else
-                    task.TrySetResult(response);
-            });
+            client.ExecuteAsync<T>(
+                request,
+                response => {
+                    if(response.ErrorException != null) {
+                        task.TrySetException(response.ErrorException);
+                    } else {
+                        task.TrySetResult(response);
+                    }
+                });
 
             return task.Task;
         }
@@ -109,8 +120,11 @@ namespace PiperProject.Client.Actors {
 
             if(client.StatusCode != HttpStatusCode.OK) {
 
-                throw new Exception(string.Format("Invalid response: {0} {1}.", (int) client.StatusCode, client.StatusDescription));
+                throw new Exception(
+                    string.Format("Invalid response: {0} {1}.", (int) client.StatusCode, client.StatusDescription));
             }
         }
+
     }
+
 }

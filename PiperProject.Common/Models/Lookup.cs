@@ -1,4 +1,8 @@
-﻿using PiperProject.Common.Actors;
+﻿#region Usings
+
+using PiperProject.Common.Actors;
+
+#endregion
 
 namespace PiperProject.Common.Models {
 
@@ -32,5 +36,7 @@ namespace PiperProject.Common.Models {
                 return string.Format("/api/document/{0}", Hash);
             }
         }
+
     }
+
 }

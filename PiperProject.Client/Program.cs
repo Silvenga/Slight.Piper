@@ -1,20 +1,22 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using PiperProject.Client.Actors;
 
+#endregion
+
 namespace PiperProject.Client {
 
-    static class Program {
+    internal static class Program {
 
         public static void Main(string[] args) {
 
             Task.Run(
-                async () => {
-                    await AsyncContext(args);
-                }).Wait();
+                async () => { await AsyncContext(args); }).Wait();
         }
 
         public static async Task AsyncContext(IEnumerable<string> args) {
@@ -68,4 +70,5 @@ namespace PiperProject.Client {
         }
 
     }
+
 }

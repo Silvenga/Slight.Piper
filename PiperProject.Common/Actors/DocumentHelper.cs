@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 
 using PiperProject.Common.Models;
+
+#endregion
 
 namespace PiperProject.Common.Actors {
 
@@ -20,8 +24,9 @@ namespace PiperProject.Common.Actors {
 
         public static Document Encrypt(this Document document, out Lookup lookup) {
 
-            if(document.IsEncrypted())
+            if(document.IsEncrypted()) {
                 throw new ArgumentException("Document must be plain text.");
+            }
 
             lookup = new Lookup {
                 Key = NextId()
@@ -40,16 +45,19 @@ namespace PiperProject.Common.Actors {
 
         public static Document Decrypt(this Document document, Lookup lookup) {
 
-            if(!document.IsEncrypted())
+            if(!document.IsEncrypted()) {
                 throw new ArgumentException("Document must be crypto text.");
+            }
 
-            if(!Equals(lookup.Hash, document.Id))
+            if(!Equals(lookup.Hash, document.Id)) {
                 throw new ArgumentException("Document hash must match with the lookup signature.");
+            }
 
             var header = Crypto.Decrypt(document.CryptoHeader, lookup.Key);
 
-            if(!Equals(header, lookup.Key))
+            if(!Equals(header, lookup.Key)) {
                 throw new ArgumentException("Document cannot be decrypted with the given lookup key. ");
+            }
 
             var body = Crypto.Decrypt(document.Body, lookup.Key);
             document.Body = body;
@@ -71,5 +79,7 @@ namespace PiperProject.Common.Actors {
 
             return documnet.Encrypt(out lookup);
         }
+
     }
+
 }
